@@ -36,6 +36,22 @@ with open("negative-words.txt") as filein:
 searchQuery = ["#Election2016",'#news', '#politics', '#BREAKING' ]
 
 
+def DuplicateFinder(searchQuery):
+
+    for query in searchQuery:
+        tweetset = []
+        collection = db['twitter_{0}'.format(query[1:])]
+        for tweets in collection.find():
+            tweetset.append(tweets["id_str"])
+        for x in range (0, len(tweetset)-1):
+            print(tweetset[x])
+            for y in range(x+1, len(tweetset)-1):
+                try:
+                    if tweetset[x] == tweetset[y]:
+                        print("Removing tweet: " + tweetset[y])
+                        collection.remove(tweetset[y])
+                        del tweetset[y]
+                
 
 def Analyzer(searchQuery):
     outputFile = open("output.txt", "w+")
@@ -125,7 +141,7 @@ def CleanDatabase(searchQuery):
 
 #CleanDatabase(searchQuery)
 
-Analyzer(searchQuery)
+#Analyzer(searchQuery)
 
-
+DuplicateFinder(searchQuery)
 

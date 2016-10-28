@@ -4,15 +4,11 @@ from pymongo import MongoClient
 import json
 import tweepy
 from tweepy import OAuthHandler
+from AuthData import consumer_key, consumer_secret, access_token, access_token_secret
 #############
 #   PyMongo can be installed with pip: pip install pymongo
 #   Tweepy can be installed wit pip: pip install tweepy
 #############
-
-consumer_key = 'DZywGzmksnJrOw1WpvAyp2ZsK'
-consumer_secret = 'Zj6eWQuS0N8PU9kuLsWJvDoAv475jDOgBMdUxXL7E2cKWS3ypX'
-access_token = '96603688-8o9HNqeiv0mZiT8rYo9t7sSjRORUcwdVtyPKhlPvZ'
-access_token_secret = 'n8UY71GmWTwm1N9IXIdsAY2U9tVqwwbrlNrG9unxvlszs'
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
