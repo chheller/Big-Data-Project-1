@@ -36,21 +36,7 @@ with open("negative-words.txt") as filein:
 searchQuery = ["#Election2016",'#news', '#politics', '#BREAKING' ]
 
 
-def DuplicateFinder(searchQuery):
 
-    for query in searchQuery:
-        tweetset = []
-        collection = db['twitter_{0}'.format(query[1:])]
-        for tweets in collection.find():
-            tweetset.append(tweets["id_str"])
-        for x in range (0, len(tweetset)-1):
-            print(tweetset[x])
-            for y in range(x+1, len(tweetset)-1):
-                try:
-                    if tweetset[x] == tweetset[y]:
-                        print("Removing tweet: " + tweetset[y])
-                        collection.remove(tweetset[y])
-                        del tweetset[y]
                 
 
 def Analyzer(searchQuery):
@@ -114,18 +100,18 @@ def Analyzer(searchQuery):
     aggregate = open("aggr_out.txt", "w+")
     aggr_out = """
 
-                    Trump         | Clinton
+                    Trump                   | Clinton
     ----------------------------------------------------------
-    Total Positive: {0}                 | {1}
-    Total Negative: {2}                 | {3}
-    Net Score:      {4}                 | {5}
-    Average Score:  {6:.2f}             | {7:.2f}
-    Total Tweets:   {8}                 | {9}
+    Total Positive: {0}                     | {1}
+    Total Negative: {2}                     | {3}
+    Net Score:      {4}                     | {5}
+    Average Score:  {6:.2f}%                 | {7:.2f}%
+    Total Tweets:   {8}                     | {9}
     -----------------------------------------------------------
     Total Tweets: {10}
     All Tweets: {11}
     """.format(trump_pos, clin_pos, trump_neg, clin_neg, trump_aggr, clin_aggr,
-               trump_aggr/trump_count, clin_aggr/clin_count, trump_count, clin_count,
+               (trump_aggr/trump_count)*100, (clin_aggr/clin_count)*100, trump_count, clin_count,
                clin_count+trump_count, all_tweets)
     aggregate.write(aggr_out)
     print(aggr_out)
@@ -141,7 +127,7 @@ def CleanDatabase(searchQuery):
 
 #CleanDatabase(searchQuery)
 
-#Analyzer(searchQuery)
+Analyzer(searchQuery)
 
-DuplicateFinder(searchQuery)
+
 
