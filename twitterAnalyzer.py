@@ -50,15 +50,30 @@ def Analyzer(searchQuery):
     clin_count = 0
     trump_count = 0
     all_tweets = 0
+
+    perctotal = 0
+    count = 0
+    thresh = 5
+    threshorig = 5
     for query in searchQuery:
         collection = db['twitter_{0}'.format(query[1:])]
+        perctotal += collection.count()
+        print(collection.count())
         for tweets in collection.find():
+            count += 1
+            percent = count/perctotal
+
+            if percent * 100 > thresh:
+                thresh += threshorig
+                print(str(round(percent * 100)) + "% complete.")
+
             all_tweets += 1
             posCount = 0
             negCount = 0
             rating = 0
             body = tweets['text'].lower().split(' ')
 
+            print(tweets['text']) if "clinton" in body or "trump" in body else print()
             if ("clinton" in body or "trump" in body) and not ("clinton" in body and "trump" in body):
                 for words in body:
                     if words in positiveWords:
@@ -85,6 +100,8 @@ def Analyzer(searchQuery):
                         trump_aggr += 1
                     elif rating < 0:
                         trump_aggr -= 1
+                trump_perc = (trump_aggr/trump_count)*100 if trump_count > 0 else 0
+                clin_perc = (clin_aggr/clin_count)*100 if clin_count > 0 else 0
                 output = """
             Tweet ID: {0}
             Candidate: {1}
@@ -111,7 +128,7 @@ def Analyzer(searchQuery):
     Total Tweets: {10}
     All Tweets: {11}
     """.format(trump_pos, clin_pos, trump_neg, clin_neg, trump_aggr, clin_aggr,
-               (trump_aggr/trump_count)*100, (clin_aggr/clin_count)*100, trump_count, clin_count,
+               trump_perc, clin_perc, trump_count, clin_count,
                clin_count+trump_count, all_tweets)
     aggregate.write(aggr_out)
     print(aggr_out)

@@ -26,10 +26,10 @@ last_sun = str(datetime.date.today() -
                datetime.timedelta(days=datetime.date.today().weekday() + 1))
 last_mon = str(datetime.date.today() -
                datetime.timedelta(days=datetime.date.today().weekday() + 7))
-searchQuery = ['#politics', "#Election2016"]
+searchQuery = ["#Election2016"]
 
 
-def crawler(searchQuery, maxTweets=100000, tweetsPerQry=1000):
+def crawler(searchQuery, maxTweets=10000000, tweetsPerQry=1000):
     for word in searchQuery:
         max_id = -1
         tweetCount = 0
